@@ -1,0 +1,465 @@
+/*
+ * GitHub2 Lego v2.0 — Reading
+ * Typora theme (standalone, no @import or external assets).
+ * Adapted from legoming/macdown_theme_lego/GitHub2.css
+ * https://github.com/legoming/macdown_theme_lego/blob/main/GitHub2.css
+ *
+ * Technical: numbered headings / structured technical docs.
+ * Reading: unnumbered headings / long-form reading.
+ * CodeMirror: ONLY the outer pre.md-fences is a card; inner pre lines stay flat.
+ * Requires no paid fonts. GitHub Alerts require Typora Preferences > Markdown setting.
+ */
+
+
+:root {
+  --bg-color: #ffffff;
+  --text-color: #333a44;
+  --md-char-color: #97a0ad;
+  --meta-content-color: #738195;
+  --primary-color: #2563eb;
+  --primary-btn-border-color: #2563eb;
+  --primary-btn-text-color: #ffffff;
+  --window-border: 1px solid #e3e8ef;
+  --side-bar-bg-color: #fafbfc;
+  --active-file-bg-color: #edf3fc;
+  --active-file-text-color: #263547;
+  --active-file-border-color: #2563eb;
+  --item-hover-bg-color: #f1f3f6;
+  --item-hover-text-color: #283442;
+  --monospace: "JetBrains Mono", "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  --lego-link: #2563eb;
+  --lego-heading: #222b36;
+  --lego-muted: #75808c;
+  --lego-border: #e3e8ef;
+  --lego-code-bg: #f0f2f5;
+  --lego-codeblock-bg: #f8f9fb;
+  --lego-table-head: #f3f5f8;
+  --lego-table-stripe: #fafbfc;
+  --lego-toc-accent: #6fc18c;
+  --lego-toc-bg: #f8faf9;
+}
+html {
+  font-size: 16px;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+}
+html, body {
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI",
+      "PingFang SC", "Microsoft YaHei", "Noto Sans CJK SC", "Noto Sans SC", sans-serif;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+body { background-color: var(--bg-color); }
+#write {
+  box-sizing: border-box;
+  width: auto;
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 32px 42px 100px;
+  color: var(--text-color);
+  font-size: 1rem;
+  line-height: 1.8;
+  overflow-wrap: break-word;
+}
+#write > :first-child { margin-top: 0 !important; }
+#write > :last-child { margin-bottom: 0 !important; }
+#write p { margin: .95em 0; line-height: inherit; }
+#write li { line-height: inherit; }
+#write li > p { margin: .15em 0; }
+#write ul, #write ol { padding-left: 1.75em; margin: .65em 0; }
+#write li > ul, #write li > ol { margin-top: .2em; margin-bottom: .2em; }
+#write dl { padding: 0; }
+#write dl dt { font-weight: 700; margin: 1em 0 .2em; }
+#write dl dd { margin: 0 0 .8em; padding-left: 1em; }
+#write hr { height: 0; border: 0; border-top: 1px solid var(--lego-border); margin: 1.75em 0; }
+#write strong { color: var(--lego-heading); font-weight: 650; }
+
+/* Headings: variant controls alignment, numbering, sizing, and margins. */
+#write h1, #write h2, #write h3, #write h4, #write h5, #write h6 {
+  color: var(--lego-heading);
+  background: none;
+  padding: 0;
+  border: 0;
+  position: relative;
+  font-weight: 650;
+  line-height: 1.35;
+  -webkit-font-smoothing: antialiased;
+  break-after: avoid;
+}
+#write h1 code, #write h2 code, #write h3 code,
+#write h4 code, #write h5 code, #write h6 code { font-size: .9em; }
+
+/* Inline syntax and text emphasis. */
+#write a, #write a:link { color: var(--lego-link); text-decoration: none; }
+#write a:visited { color: var(--lego-link); }
+#write a:hover, #write a:active { text-decoration: underline; text-underline-offset: 3px; }
+#write blockquote {
+  border-left: 3px solid #ccd5df;
+  background: #f8fafc;
+  color: #5a6675;
+  padding: .65em 1em;
+  margin: 1em 0;
+  border-radius: 0 5px 5px 0;
+}
+#write blockquote > :first-child { margin-top: 0; }
+#write blockquote > :last-child { margin-bottom: 0; }
+#write mark, #write hl { background: #fff0a8; color: #74420a; padding: 1px 3px; border-radius: 3px; }
+#write del { text-decoration-color: #a5b0bd; }
+#write sup { font-size: .8em; line-height: 0; }
+#write kbd {
+  display: inline-block; padding: 2px 6px; border: 1px solid #cbd3dd;
+  border-bottom-width: 2px; border-radius: 4px; background: #fbfcfe;
+  color: #394454; font: .75em/1.4 var(--monospace);
+}
+
+/* INLINE code: never apply this background to CodeMirror's per-line PRE. */
+#write :not(pre) > code, #write tt {
+  padding: 2px 5px;
+  margin: 0 1px;
+  background: var(--lego-code-bg);
+  border-radius: 4px;
+  color: #a13a55;
+  font-family: var(--monospace);
+  font-size: .88em;
+  white-space: break-spaces;
+  overflow-wrap: anywhere;
+}
+/* Outer code fence, including its pre-CodeMirror mock-cm state. */
+#write pre.md-fences,
+#write pre:not(.md-fences):has(> code) {
+  box-sizing: border-box;
+  display: block;
+  max-width: 100%;
+  margin: 1.1em 0;
+  padding: 12px 14px;
+  border: 1px solid var(--lego-border);
+  border-radius: 8px;
+  background-color: var(--lego-codeblock-bg);
+  color: #2a3442;
+  font: .875rem/1.58 var(--monospace);
+  overflow-x: auto;
+  overflow-y: hidden;
+  tab-size: 4;
+  box-shadow: none;
+}
+#write pre.md-fences.mock-cm { background-color: var(--lego-codeblock-bg); color: #2a3442; }
+#write pre:not(.md-fences):has(> code) > code {
+  font: inherit; color: inherit; background: transparent;
+  border: 0; margin: 0; padding: 0; white-space: pre;
+}
+/* Internal CodeMirror layout must be visually transparent & have no line cards. */
+#write .md-fences .CodeMirror,
+#write .md-fences .CodeMirror-scroll,
+#write .md-fences .CodeMirror-lines,
+#write .md-fences .CodeMirror-sizer,
+#write .md-fences .CodeMirror-code,
+#write .md-fences .cm-s-inner {
+  background-color: transparent;
+  color: #2a3442;
+  font-family: var(--monospace);
+  line-height: 1.58;
+  border: 0;
+  box-shadow: none;
+}
+#write .md-fences .CodeMirror-code pre,
+#write .md-fences .CodeMirror-lines pre,
+#write .md-fences .CodeMirror-measure pre {
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  line-height: inherit;
+  font: inherit;
+  white-space: pre;
+  max-width: none;
+  overflow: visible;
+}
+#write .md-fences .CodeMirror-gutters {
+  background: var(--lego-codeblock-bg);
+  border-right: 1px solid #e1e7ee;
+}
+#write .md-fences .CodeMirror-linenumber { color: #8a97a9; }
+#write .md-fences .CodeMirror-cursor { border-left: 1px solid #56667c; }
+#write .md-fences .CodeMirror-selected { background: #dbeafe; }
+#write .md-fences .code-tooltip,
+#write .md-fences .md-fences-adv-panel { background: var(--lego-codeblock-bg); }
+#write .md-fences *, #write .md-fences { transition: none !important; animation: none !important; }
+/* Typora uses cm-s-inner for code-fence syntax tokens, not source mode. */
+#write .cm-s-inner .cm-keyword { color: #7b3fa4; }
+#write .cm-s-inner .cm-atom,
+#write .cm-s-inner .cm-number { color: #1759af; }
+#write .cm-s-inner .cm-string,
+#write .cm-s-inner .cm-string-2 { color: #1c7254; }
+#write .cm-s-inner .cm-comment { color: #798596; font-style: italic; }
+#write .cm-s-inner .cm-def,
+#write .cm-s-inner .cm-variable-2 { color: #1d5c9a; }
+#write .cm-s-inner .cm-variable,
+#write .cm-s-inner .cm-property { color: #2a3442; }
+#write .cm-s-inner .cm-builtin,
+#write .cm-s-inner .cm-tag { color: #b44d35; }
+#write .cm-s-inner .cm-attribute,
+#write .cm-s-inner .cm-qualifier { color: #975721; }
+#write .cm-s-inner .cm-operator,
+#write .cm-s-inner .cm-meta { color: #576777; }
+#write .cm-s-inner .cm-link { color: #1a64db; }
+#write .cm-s-inner .cm-error { background: #fee2e2; color: #b91c1c; }
+/* YAML front matter is not an ordinary code card. */
+#write pre.md-meta-block {
+  font: .82rem/1.55 var(--monospace);
+  background: #f9fafb;
+  color: var(--lego-muted);
+  border: 1px dashed var(--lego-border);
+  border-radius: 6px;
+  padding: .65em .9em;
+}
+
+/* Tables: good scanning contrast, controlled cell wraps, no hard-coded fixed width. */
+#write table {
+  width: 100%;
+  max-width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
+  margin: 1.2em 0;
+  font-size: .925em;
+  line-height: 1.55;
+  table-layout: auto;
+}
+#write table tr { border: 0; background: transparent; }
+#write table th, #write table td {
+  padding: 9px 12px;
+  border: 1px solid var(--lego-border);
+  text-align: left;
+  vertical-align: top;
+  overflow-wrap: anywhere;
+  word-break: normal;
+}
+#write table th { background: var(--lego-table-head); font-weight: 650; color: var(--lego-heading); }
+#write table tbody tr:nth-child(even) td { background: var(--lego-table-stripe); }
+#write table td code, #write table th code { overflow-wrap: anywhere; }
+#write table th > :first-child, #write table td > :first-child { margin-top: 0; }
+#write table th > :last-child, #write table td > :last-child { margin-bottom: 0; }
+#write .md-table-edit { color: var(--text-color); }
+
+/* Typora GitHub-style Markdown alerts: Preferences > Markdown > GitHub Style Alert. */
+#write .md-alert {
+  box-sizing: border-box;
+  margin: 1em 0;
+  padding: .65em 1em;
+  border: 1px solid #dce5ef;
+  border-left: 4px solid #0969da;
+  border-radius: 5px;
+  color: var(--text-color);
+  background: #f3f8ff;
+}
+#write .md-alert .md-alert-text { font-weight: 700; font-size: .92em; margin-bottom: .35em; }
+#write .md-alert-note { border-left-color: #0969da; background: #f3f8ff; }
+#write .md-alert-tip { border-left-color: #1f883d; background: #f0fbf4; }
+#write .md-alert-important { border-left-color: #8250df; background: #f6f2ff; }
+#write .md-alert-warning { border-left-color: #9a6700; background: #fffbeb; }
+#write .md-alert-caution { border-left-color: #cf222e; background: #fff5f5; }
+#write .md-alert-text-note { color: #0969da; }
+#write .md-alert-text-tip { color: #1f883d; }
+#write .md-alert-text-important { color: #8250df; }
+#write .md-alert-text-warning { color: #9a6700; }
+#write .md-alert-text-caution { color: #cf222e; }
+#write .md-alert > :last-child { margin-bottom: 0; }
+
+/* In-document TOC remains normal flow, never MacDown's fixed overlay. */
+#write .md-toc, #write ul.toc {
+  width: 100%; max-width: 100%; box-sizing: border-box;
+  padding: 14px 20px;
+  margin: 1.25em 0;
+  float: none; position: relative; z-index: auto;
+  white-space: normal; overflow-wrap: anywhere;
+  border-left: 4px solid var(--lego-toc-accent);
+  border-radius: 4px;
+  background: var(--lego-toc-bg);
+  font-size: .92em;
+  line-height: 1.6;
+}
+#write .md-toc a, #write ul.toc a { color: var(--lego-link); }
+#write .md-toc-item { line-height: 1.6; }
+#write ul.toc { list-style-type: none; padding-left: 1.4em; }
+#write ul.toc li { list-style-type: none; }
+
+/* Markdown tasks, footnotes, images, details, diagrams and math. */
+#write .md-task-list-item { list-style-type: none; }
+#write .md-task-list-item > input[type="checkbox"],
+#write input[type="checkbox"] { accent-color: var(--lego-link); }
+#write img, #write video { max-width: 100%; height: auto; }
+#write img { vertical-align: middle; border-radius: 5px; }
+#write .footnotes, #write div.footnotes {
+  padding-top: .4em;
+  margin-top: 1.25em;
+  font-size: .84em;
+  line-height: 1.6;
+  color: var(--lego-muted);
+}
+#write .footnote-ref, #write .footnote { color: var(--lego-link); }
+#write .md-math-block, #write [mdtype="math_block"] {
+  max-width: 100%; overflow-x: auto;
+  margin: 1.2em 0; padding: .6em 0;
+}
+#write .md-diagram-panel, #write .md-diagram-panel-preview {
+  max-width: 100%; overflow-x: auto;
+  margin: .8em 0;
+}
+#write .md-diagram-panel svg, #write svg.mermaid,
+#write .mathjax-block { max-width: 100%; }
+#write span.frame, #write span.align-center, #write span.align-right { display: block; overflow: hidden; }
+#write span.frame > span { display: inline-block; border: 1px solid var(--lego-border); padding: 7px; margin: 13px 0 0; }
+#write span.align-center { text-align: center; }
+#write span.align-right { text-align: right; }
+#write span.float-left { float: left; margin-right: 13px; }
+#write span.float-right { float: right; margin-left: 13px; }
+
+
+
+/* READING variant: no CSS-generated heading numbers, H1 is left-aligned. */
+#write h1 { font-size: 2.1rem; margin: 1.4em 0 .75em; letter-spacing: -.025em; text-align: left; }
+#write h2 { font-size: 1.58rem; margin: 1.45em 0 .7em; padding-bottom: .28em;
+             border-bottom: 1px solid var(--lego-border); }
+#write h3 { font-size: 1.28rem; margin: 1.3em 0 .55em; }
+#write h4 { font-size: 1.13rem; margin: 1.2em 0 .5em; }
+#write h5 { font-size: 1.04rem; margin: 1.1em 0 .4em; }
+#write h6 { font-size: .95rem; margin: 1.05em 0 .4em; color: var(--lego-muted); }
+#write h1::before, #write h2::before, #write h3::before,
+#write h4::before, #write h5::before, #write h6::before { content: none; }
+#write blockquote { background: #fafbfc; border-left-color: #c7d2de; }
+
+/* MacDown custom notes. Both custom elements and .class versions are supported. */
+#write note, #write warning, #write caution, #write important,
+#write point, #write term, #write objective, #write dogfood,
+#write success, #write fixme,
+#write .lego-note, #write .lego-warning, #write .lego-caution,
+#write .lego-important, #write .lego-point, #write .lego-term,
+#write .lego-objective, #write .lego-dogfood,
+#write .lego-success, #write .lego-fixme {
+  box-sizing: border-box;
+  display: block;
+  padding: 12px 14px 12px 22px;
+  margin: 24px 0;
+  font-size: .95rem;
+  font-family: inherit;
+  line-height: 1.7;
+  border-radius: 3px;
+  border-left: 4px solid currentColor;
+  background: #e4f5fd;
+  color: #134e8e;
+  break-inside: avoid;
+}
+#write note::before, #write .lego-note::before { content: "★  Note: "; font-weight: 700; }
+#write warning, #write .lego-warning { background: #f9e9e7; color: #cc4237; }
+#write warning::before, #write .lego-warning::before { content: "⚠  Warning: "; font-weight: 700; }
+#write caution, #write .lego-caution { background: #fdf3e2; color: #b74e2f; }
+#write caution::before, #write .lego-caution::before { content: "❗  Caution: "; font-weight: 700; }
+#write important, #write .lego-important { background: #fdf7e2; color: #4a4c4d; }
+#write important::before, #write .lego-important::before { content: "❗  Important: "; font-weight: 700; }
+#write point, #write .lego-point { background: #e8eaf5; color: #5163b6; }
+#write point::before, #write .lego-point::before { content: "✦  Point: "; font-weight: 700; }
+#write term, #write .lego-term { background: #f1e6f4; color: #8333a4; }
+#write term::before, #write .lego-term::before { content: "▣  Term: "; font-weight: 700; }
+#write dogfood, #write .lego-dogfood { background: #eceff1; color: #607471; }
+#write dogfood::before, #write .lego-dogfood::before { content: "🐾  Dogfood: "; font-weight: 700; }
+#write objective, #write .lego-objective { background: #e3f1f1; color: #589289; }
+#write objective::before, #write .lego-objective::before { content: "◎  Objective: "; font-weight: 700; }
+#write success, #write .lego-success { background: #e3f1f1; color: #31776b; }
+#write success::before, #write .lego-success::before { content: "✓  Success: "; font-weight: 700; }
+#write fixme, #write .lego-fixme { background: #f9e9e7; color: #c00; }
+#write fixme::before, #write .lego-fixme::before { content: "⚒  FixME: "; font-weight: 700; }
+
+/* Editor annotations from the original CSS. */
+#write c, #write cnc, #write cg { font-size: .875rem; font-weight: 400; font-family: inherit; }
+#write c { color: #ae323b; }
+#write cnc { color: red; }
+#write cg { color: gray; font-size: .8125rem; }
+#write c::before, #write cg::before { content: "\00a0\00a0 注: \00a0"; }
+#write cnc::before { content: "\00a0\00a0 N"; }
+#write section { line-height: 3; font-weight: 700; }
+#write section::before { content: "# "; color: green; font-size: 1.1em; display: inline-block; width: 30px; }
+#write #circle { width: 20px; height: 20px; border-radius: 50%; background: red; }
+
+/* Collapsible details. Preserve native functionality and avoid hiding markers globally. */
+#write details {
+  display: block;
+  border: 2px solid #589289;
+  border-radius: 3px;
+  padding: 6px 12px;
+  margin: 15px 0;
+}
+#write summary {
+  cursor: pointer;
+  font-size: 1.2rem;
+  font-family: Skia, "Alibaba Sans", "Kaiti SC", "KaiTi", sans-serif;
+  color: #2368cf;
+}
+#write summary::marker { color: #2368cf; }
+#write details[open] { padding-bottom: 12px; }
+
+/* Colorful text highlights / tags supported by the original MacDown file. */
+#write hlred, #write hlgreen, #write hlblue,
+#write hlgray, #write hllink {
+  display: inline-block;
+  padding: 1px 4px;
+  margin: 2px;
+  border-radius: 4px;
+  font-family: inherit;
+  text-align: center;
+  line-height: 1.4;
+}
+#write hlred { color: #f3f3f3; background: #b96d6d; }
+#write hlgreen { color: #360; background: lime; }
+#write hlblue { color: #00c; background: #9cf; }
+#write hlgray { color: #000; background: #d3d3d3; }
+#write hllink {
+  color: #fff;
+  background: linear-gradient(to bottom, #9f9 0%, #1ec547 100%);
+  padding: 1px 10px 1px 4px;
+  font-size: .8125rem;
+}
+#write hllink::before {
+  content: "Link";
+  display: inline-block;
+  background: #5c5c5c;
+  color: #efefef;
+  padding: 2px 6px;
+  margin: -1px 8px -1px -4px;
+  border-radius: 3px 0 0 3px;
+  font-family: Skia, sans-serif;
+}
+
+
+
+/* UI stability: custom tags & decorations must not affect Typora's app chrome. */
+#typora-sidebar { background: var(--side-bar-bg-color); }
+
+@media (max-width: 840px) {
+  #write { padding: 24px 22px 76px; width: 100%; max-width: 100%; }
+  #write table th, #write table td { padding: 7px 8px; }
+  #write pre.md-fences { padding: 10px 11px; }
+}
+@media (max-width: 520px) {
+  #write { padding: 18px 16px 60px; }
+  #write h1 { font-size: 1.8rem; }
+  #write h2 { font-size: 1.45rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  #write *, #write *::before, #write *::after { scroll-behavior: auto; }
+}
+@media print {
+  html, body { background: #fff !important; }
+  #write { width: 100%; max-width: none; padding: 0; }
+  #write h1, #write h2, #write h3, #write h4 { break-after: avoid; }
+  #write pre.md-fences, #write pre:not(.md-fences):has(> code) {
+    white-space: pre-wrap; overflow-wrap: anywhere; break-inside: avoid;
+  }
+  #write pre:not(.md-fences):has(> code) > code { white-space: pre-wrap; }
+  #write table thead { display: table-header-group; }
+  #write table tr { break-inside: avoid; }
+  #write img, #write .md-alert { break-inside: avoid; }
+  #write .md-toc, #write ul.toc { background: #fff; }
+  #write a { color: var(--lego-link) !important; }
+  .typora-export *, #write * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+}
